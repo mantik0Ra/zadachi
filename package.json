@@ -1,0 +1,28 @@
+{
+  "name": "zadachi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mantik0Ra/zadachi.git"
+  },
+  "keywords": [
+    "read"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mantik0Ra/zadachi/issues"
+  },
+  "homepage": "https://github.com/mantik0Ra/zadachi#readme",
+  "description": "",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "eslint": "^6.0.0"
+  }
+}
