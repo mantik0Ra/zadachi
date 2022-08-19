@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+.container {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+
+}
+
+.monster {
+    position: relative;
+}
+
+span {
+    font-size: 16px;
+
+}
+
+.health-monster, .health-efstafiy {
+    display: flex;
+    justify-content: space-between;
+}
+
+form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.damage {
+    top: -200px;
+    opacity: 100%;
+    width: 100%;
+    position: absolute;
+    font-size: 25px;
+    color: red;
+    
+
+}
+
+.animation {
+    animation-name: takeDamage;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+}
+
+@keyframes takeDamage {
+    0% {
+        opacity: 0%;
+    }
+    50% {
+        opacity: 50%;
+    }
+    100% {
+        opacity: 110%;
+    }
+
+}
+
+.move {
+    position: absolute;
+    bottom: 200px;
+    left: 45%;
+    font-size: 25px;
+    font-weight: 700;
+
+}
+
+.move2 {
+    position: absolute;
+    bottom: 150px;
+    left: 45%;
+    font-size: 25px;
+    font-weight: 700;
+
+}

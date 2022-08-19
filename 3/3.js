@@ -1,6 +1,10 @@
 function randomComputer() {
-    return randomNumber = getRandomInt(100000);
+    let randomNumber = getRandomInt(100000);
+    return randomNumber;
 }
+
+let attempts = 3;
+let randomComp = randomComputer();
 
 function getRandomInt(max) {
     let bool = true
@@ -15,7 +19,6 @@ function getRandomInt(max) {
     }
 };
 
-compareRandomNumber(randomComputer(), 53412);
 
 function compareRandomNumber(randomComputer, randomHuman) {
     let randomC = randomComputer.toString().split("");
@@ -26,7 +29,6 @@ function compareRandomNumber(randomComputer, randomHuman) {
     let countPlacesNumbers = []
     let countNotPlacesNumbers = []
     for (let i = 0; i < maxLength; i++) {
-        console.log(randomH[i], randomC[i])
 
         if (randomH[i] == randomC[i]) {
             countPlaces++;
@@ -41,11 +43,52 @@ function compareRandomNumber(randomComputer, randomHuman) {
 
     }
 
-    return console.log(`совпавших цифр не на своих местах - ${countNotPlaces}(${countNotPlacesNumbers.join(" и ")}), цифр на своих местах - ${countPlaces}(${countPlacesNumbers.join(" и ")})`)
+    if(countPlaces == randomComp.toString().length) {
+        document.querySelector(".input").disabled = true;
+        tryAgain();
+    }
+
+    return countPlaces == randomComp.toString().length ? "Вы угадали!" : (`совпавших цифр не на своих местах - ${countNotPlaces}(${countNotPlacesNumbers.join(" и ")}), цифр на своих местах - ${countPlaces}(${countPlacesNumbers.join(" и ")})`)
 }
 
-const read = require("readline-sync");
-const question = read.question("Ваше число?");
-console.log(question);
+function inputUser() {
+    const input = document.querySelector(".input");
+    const answer = document.querySelector(".p")
+    const trys = document.querySelector(".attempts")
+    const form = document.forms[0];
+    
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const inputUser = input.value;
+        answer.innerText = compareRandomNumber(randomComp, inputUser);
+        attempts--
+        trys.innerText = `Осталось попыток: ${attempts}`;
+        input.value = "";
+        if(attempts == 0) {
+            input.disabled = true;
+            tryAgain();
+        }
+        
+    });
+
+}
+inputUser();
+function tryAgain() {
+    const btn = document.querySelector(".button");
+    btn.disabled = false;
+    btn.addEventListener("click", () => {
+        document.querySelector(".input").disabled = false;
+        attempts = 3;
+        document.querySelector(".attempts").innerText = `Осталось попыток:${attempts}`;
+        document.querySelector(".p").innerText = ""
+        randomComp = randomComputer();
+        btn.disabled = true;
+    });
+}
+
+
+
+
+
 
 
