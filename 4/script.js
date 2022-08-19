@@ -93,6 +93,8 @@ const form = document.forms.form;
 const formMonster = document.forms[0];
 const efstafiy1spell = form.elements[0];
 
+startGame();
+
 efstafiyMove();
 monsterMove();
 
@@ -111,6 +113,7 @@ function efstafiyMove() {
         document.querySelector(".move2").innerText = "Ход Лютого";
         gameOver(monsterHealth, efstafiy.name);
         refreshHealth();
+        botMove();
         
     
 
@@ -191,12 +194,14 @@ function cooldown(formElement) {
     for(let i = 0; i < formElement.elements.length; i++) {
         if(formElement.elements[i].getAttribute("cooldown") > 0) {
             formElement.elements[i].disabled = true;
+            formElement.elements[i].classList.add("disabled");
             let cooldown = formElement.elements[i].getAttribute("cooldown");
             cooldown--;
             formElement.elements[i].setAttribute("cooldown", cooldown);
         }
         if(formElement.elements[i].getAttribute("cooldown") == 0) {
             formElement.elements[i].disabled = false;
+            formElement.elements[i].classList.remove("disabled")
         };
     }
 }
@@ -220,6 +225,39 @@ function botMove() {
         }
 
     }
+}
+
+function startGame() {
+    const levelEz = document.querySelector("#ez");
+    const levelMedium = document.querySelector("#medium");
+    const levelHard = document.querySelector("#hard");
+    levelEz.addEventListener("click", () => {
+        console.log("click ez");
+        addView();
+        monsterHealth = 20;
+        refreshHealth()
+    })
+    levelMedium.addEventListener("click", () => {
+        console.log("click medium");
+        addView();
+        monsterHealth = 35;
+        refreshHealth()
+    });
+    levelHard.addEventListener("click", () => {
+        console.log("click hard");
+        addView();
+        monsterHealth = 45;
+        refreshHealth()
+    })
+
+}
+
+function addView() {
+    const startDiv = document.querySelector(".start_game");
+    const main = document.createElement("div");
+    const container = document.querySelector(".battlefield")
+    container.classList.remove("collapse")
+    startDiv.classList.add("collapse")
 };
 
 

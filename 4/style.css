@@ -2,6 +2,14 @@
 
 * {
     font-family: 'Poppins', sans-serif;
+    
+
+}
+
+body {
+    background: #a8c0ff;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #3f2b96, #a8c0ff);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #3f2b96, #a8c0ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .container {
     min-height: 100vh;
@@ -11,10 +19,31 @@
     align-items: center;
 }
 
+.collapse {
+    display: none;
+}
+
 h1 {
     display: flex;
     justify-content: center;
 
+}
+
+.disabled {
+    background-color: rgb(100, 94, 94);
+}
+
+button {
+    background-color: rgb(113, 127, 202);
+    color: white;
+    border: none;
+    width: 150px;
+    height: 50px;
+    border: 2px solid black;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    
 }
 
 .monster {
