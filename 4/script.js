@@ -71,8 +71,10 @@ const efstafiy = {
     ]
 };
 
-let moveCount = 0
-let clickCount = 0
+
+
+let moveCount = 1;
+let clickCount = 0;
 const damage = document.querySelector(".damage");
 let monsterHealth = monster.maxHealth;
 let monsterPhysicArmour = monster.physicArmour;
@@ -89,68 +91,53 @@ const efstafiyMagic = document.querySelector(".magic-efstafiy");
 console.log(monsterHealth, monsterPhysicArmour, monsterMagicArmour);
 const form = document.forms.form;
 const formMonster = document.forms[0];
+const efstafiy1spell = form.elements[0];
+
+efstafiyMove();
+monsterMove();
 
 
 function efstafiyMove() {
-    clickCount++
-    console.log(clickCount)
-    const moves = efstafiy.moves
+    const moves = efstafiy.moves;
     form.addEventListener("click", (e) => {
         e.preventDefault();
-        damage.innerText = `Монстр наносит ${moves[e.target.id].name} удар, нанося ${moves[e.target.id].physicalDmg} физического урона и ${moves[e.target.id].magicDmg} магического урона`;
-        if(monsterPhysicArmour - moves[e.target.id].physicalDmg < 0) {
-            monsterHealth -= (moves[e.target.id].physicalDmg - monsterPhysicArmour)
-            monsterPhysicArmour = 0
-        } else {
-            monsterPhysicArmour - (moves[e.target.id].physicalDmg) > 0 ? monsterPhysicArmour - (moves[e.target.id].physicalDmg) : 0
-        }
-        if(monsterMagicArmour - moves[e.target.id].magicDmg < 0) {
-            monsterHealth -= (moves[e.target.id].magicDmg - monsterMagicArmour)
-            monsterMagicArmour = 0
-        } else {
-            monsterMagicArmour - (moves[e.target.id].magicDmg) > 0 ? monsterMagicArmour - (moves[e.target.id].magicDmg) : 0
-        }
-        efstafiyPhysicArmour += (moves[e.target.id].physicArmorPercents)
-        efstafiyMagicArmour += (moves[e.target.id].magicArmorPercents)
-        console.log(monsterHealth, monsterPhysicArmour, monsterMagicArmour);
+        console.log(e.target);
+        damage.innerText = `Евстафий наносит ${moves[e.target.id].name} удар, нанося ${moves[e.target.id].physicalDmg} физического урона и ${moves[e.target.id].magicDmg} магического урона`;
+        countDamage(monsterPhysicArmour, moves[e.target.id].physicalDmg, monsterMagicArmour, moves[e.target.id].magicDmg, monsterHealth, 1);
+        efstafiyPhysicArmour += (moves[e.target.id].physicArmorPercents);
+        efstafiyMagicArmour += (moves[e.target.id].magicArmorPercents);
         disable(true, false);
-        document.querySelector(".move2").innerText = "Ход Лютого"
-        
-        
+        cooldown(formMonster);
+        e.target.setAttribute("cooldown", moves[e.target.id].cooldown);
+        console.log(e.target.getAttribute("cooldown"))
+        document.querySelector(".move2").innerText = "Ход Лютого";
+        gameOver(monsterHealth, efstafiy.name);
         refreshHealth();
-        monsterMove();
+    
 
     })
 }
-efstafiyMove();
+
 
 function monsterMove() {
-    moveCount++
-    console.log(moveCount)
+    
+    console.log("move "+moveCount);
     const moves = monster.moves;
     formMonster.addEventListener("click", (e) => {
+        moveCount++;
+        e.target.setAttribute("cooldown", moves[e.target.id].cooldown)
         e.preventDefault();
+        console.log("click");
         damage.innerText = `Монстр наносит ${moves[e.target.id].name} удар, нанося ${moves[e.target.id].physicalDmg} физического урона и ${moves[e.target.id].magicDmg} магического урона`;
-        if(efstafiyPhysicArmour - moves[e.target.id].physicalDmg < 0) {
-            efstafiyHealth -= (moves[e.target.id].physicalDmg - efstafiyPhysicArmour)
-            efstafiyPhysicArmour = 0
-        } else {
-            efstafiyPhysicArmour - (moves[e.target.id].physicalDmg) > 0 ? efstafiyPhysicArmour - (moves[e.target.id].physicalDmg) : 0
-        }
-        if(efstafiyMagicArmour - moves[e.target.id].magicDmg < 0) {
-            efstafiyHealth -= (moves[e.target.id].magicDmg - efstafiyMagicArmour)
-            efstafiyMagicArmour = 0
-        } else {
-            efstafiyMagicArmour - (moves[e.target.id].magicDmg) > 0 ? efstafiyMagicArmour - (moves[e.target.id].magicDmg) : 0
-        }
-        monsterPhysicArmour += (moves[e.target.id].physicArmorPercents)
-        monsterMagicArmour += (moves[e.target.id].magicArmorPercents)
-        console.log(efstafiyHealth, efstafiyPhysicArmour, efstafiyMagicArmour);
+        countDamage(efstafiyPhysicArmour, moves[e.target.id].physicalDmg, efstafiyMagicArmour, moves[e.target.id].magicDmg, efstafiyHealth, 2);
+        monsterPhysicArmour += (moves[e.target.id].physicArmorPercents);
+        monsterMagicArmour += (moves[e.target.id].magicArmorPercents);
         refreshHealth();
         disable(false, true);
         document.querySelector(".move2").innerText = "Ход Евстафия";
+        gameOver(efstafiyHealth, monster.name);
+        cooldown(form);
         
-        efstafiyMove();
 
     })
 
@@ -164,6 +151,27 @@ function disable(active, disable) {
     }
 }
 
+function countDamage(physicArmour, physicalDmg, magicArmour, magicDmg, health, player) {
+    if(physicArmour - physicalDmg < 0) {
+        health -= (physicalDmg - physicArmour);
+        physicArmour = 0;
+    } else {
+        physicArmour - (physicalDmg) > 0 ? physicArmour - (physicalDmg) : 0
+    }
+    if(magicArmour - magicDmg < 0) {
+        health -= (magicDmg - magicArmour);
+        magicArmour = 0;
+    } else {
+        magicArmour - (magicDmg) > 0 ? magicArmour - (magicDmg) : 0
+    }
+    if(player == 1 ) {
+        monsterHealth = health
+    } else {
+       efstafiyHealth = health
+    }
+    
+}
+
 function refreshHealth() {
     monsterHeal.innerText = `health: ${monsterHealth}`;
     monsterPhysic.innerText = `armour: ${monsterPhysicArmour}`;
@@ -173,6 +181,28 @@ function refreshHealth() {
     efstafiyMagic.innerText = `magic armour: ${efstafiyMagicArmour}`;
     document.querySelector(".move").innerText = `Round ${moveCount}`;
 };
+
+function gameOver(playerHealth, player) {
+    if(playerHealth <= 0) {
+        disable(true, true);
+        damage.innerText = `${player} одержал победу!`
+    }
+}
+
+function cooldown(formElement) {
+    for(let i = 0; i < formElement.elements.length; i++) {
+        if(formElement.elements[i].getAttribute("cooldown") > 0) {
+            console.log("cooldown");
+            formElement.elements[i].disabled = true;
+            let cooldown = formElement.elements[i].getAttribute("cooldown");
+            cooldown--;
+            formElement.elements[i].setAttribute("cooldown", cooldown);
+        }
+        if(formElement.elements[i].getAttribute("cooldown") == 0) {
+            formElement.elements[i].disabled = false;
+        };
+    }
+}
 
 
 
