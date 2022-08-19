@@ -8,8 +8,8 @@ const monster = {
             "name": "Удар когтистой лапой",
             "physicalDmg": 4, // физический урон
             "magicDmg": 0,    // магический урон
-            "physicArmorPercents": 0, // физическая броня
-            "magicArmorPercents": 0,  // магическая броня
+            "physicArmorPercents": 2, // физическая броня
+            "magicArmorPercents": 2,  // магическая броня
             "cooldown": 0     // ходов на восстановление
         },
         {
@@ -46,17 +46,17 @@ const efstafiy = {
         },
         {
             "name": "Вертушка левой пяткой",
-            "physicalDmg": 8,
+            "physicalDmg": 6,
             "magicDmg": 0,
             "physicArmorPercents": 0,
-            "magicArmorPercents": 5,
+            "magicArmorPercents": 3,
             "cooldown": 4
         },
         {
             "name": "Каноничный фаербол",
             "physicalDmg": 0,
-            "magicDmg": 10,
-            "physicArmorPercents": 2,
+            "magicDmg": 7,
+            "physicArmorPercents": 0,
             "magicArmorPercents": 0,
             "cooldown": 3
         },
@@ -64,8 +64,8 @@ const efstafiy = {
             "name": "Магический блок",
             "physicalDmg": 0,
             "magicDmg": 2,
-            "physicArmorPercents": 8,
-            "magicArmorPercents": 4,
+            "physicArmorPercents": 4,
+            "magicArmorPercents": 2,
             "cooldown": 4
         },
     ]
@@ -96,12 +96,10 @@ const efstafiy1spell = form.elements[0];
 efstafiyMove();
 monsterMove();
 
-
 function efstafiyMove() {
     const moves = efstafiy.moves;
     form.addEventListener("click", (e) => {
         e.preventDefault();
-        console.log(e.target);
         damage.innerText = `Евстафий наносит ${moves[e.target.id].name} удар, нанося ${moves[e.target.id].physicalDmg} физического урона и ${moves[e.target.id].magicDmg} магического урона`;
         countDamage(monsterPhysicArmour, moves[e.target.id].physicalDmg, monsterMagicArmour, moves[e.target.id].magicDmg, monsterHealth, 1);
         efstafiyPhysicArmour += (moves[e.target.id].physicArmorPercents);
@@ -113,6 +111,7 @@ function efstafiyMove() {
         document.querySelector(".move2").innerText = "Ход Лютого";
         gameOver(monsterHealth, efstafiy.name);
         refreshHealth();
+        
     
 
     })
@@ -124,10 +123,9 @@ function monsterMove() {
     console.log("move "+moveCount);
     const moves = monster.moves;
     formMonster.addEventListener("click", (e) => {
+        e.preventDefault();
         moveCount++;
         e.target.setAttribute("cooldown", moves[e.target.id].cooldown)
-        e.preventDefault();
-        console.log("click");
         damage.innerText = `Монстр наносит ${moves[e.target.id].name} удар, нанося ${moves[e.target.id].physicalDmg} физического урона и ${moves[e.target.id].magicDmg} магического урона`;
         countDamage(efstafiyPhysicArmour, moves[e.target.id].physicalDmg, efstafiyMagicArmour, moves[e.target.id].magicDmg, efstafiyHealth, 2);
         monsterPhysicArmour += (moves[e.target.id].physicArmorPercents);
@@ -192,7 +190,6 @@ function gameOver(playerHealth, player) {
 function cooldown(formElement) {
     for(let i = 0; i < formElement.elements.length; i++) {
         if(formElement.elements[i].getAttribute("cooldown") > 0) {
-            console.log("cooldown");
             formElement.elements[i].disabled = true;
             let cooldown = formElement.elements[i].getAttribute("cooldown");
             cooldown--;
@@ -203,6 +200,28 @@ function cooldown(formElement) {
         };
     }
 }
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+let target = null
+
+
+function botMove() {
+    let check = true
+    while(check) {
+        let move = getRandomInt(3);
+        target = formMonster.elements[move];
+        if(target.getAttribute("cooldown") <= 0) {
+            check = false
+            target.click();
+            console.log("find")
+        }
+
+    }
+};
+
 
 
 
