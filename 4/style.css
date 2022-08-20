@@ -46,8 +46,13 @@ button {
     
 }
 
-button:hover {
+.button {
+
+}
+
+.button:hover {
     animation: btn-hover 0.3s linear forwards;
+    color: #3f2b96;
     
 }
 
