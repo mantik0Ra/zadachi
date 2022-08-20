@@ -46,6 +46,19 @@ button {
     
 }
 
+button:hover {
+    animation: btn-hover 0.3s linear forwards;
+    
+}
+
+@keyframes btn-hover {
+    0% {
+        transform: scale(100%);
+    }
+    100% {
+        transform: scale(110%);
+    }
+}
 .monster {
     position: relative;
 }

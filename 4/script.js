@@ -88,7 +88,6 @@ const monsterMagic = document.querySelector(".magic-monster");
 const efstafiyHeal = document.querySelector(".heal-efstafiy");
 const efstafiyPhysic = document.querySelector(".physic-efstafiy");
 const efstafiyMagic = document.querySelector(".magic-efstafiy");
-console.log(monsterHealth, monsterPhysicArmour, monsterMagicArmour);
 const form = document.forms.form;
 const formMonster = document.forms[0];
 const efstafiy1spell = form.elements[0];
@@ -103,13 +102,13 @@ function efstafiyMove() {
     form.addEventListener("click", (e) => {
         e.preventDefault();
         damage.innerText = `Евстафий наносит ${moves[e.target.id].name} удар, нанося ${moves[e.target.id].physicalDmg} физического урона и ${moves[e.target.id].magicDmg} магического урона`;
-        countDamage(monsterPhysicArmour, moves[e.target.id].physicalDmg, monsterMagicArmour, moves[e.target.id].magicDmg, monsterHealth, 1);
         efstafiyPhysicArmour += (moves[e.target.id].physicArmorPercents);
         efstafiyMagicArmour += (moves[e.target.id].magicArmorPercents);
+        countDamage(monsterPhysicArmour, moves[e.target.id].physicalDmg, monsterMagicArmour, moves[e.target.id].magicDmg, monsterHealth, 1);
+        console.log(`Евстафий наносит ${moves[e.target.id].physicalDmg} физического урона и ${moves[e.target.id].magicDmg} магического урона, здоровье евстафия = ${efstafiyHealth}, броня:${efstafiyPhysicArmour}, магическая:${efstafiyMagicArmour}`);
         disable(true, false);
         cooldown(formMonster);
         e.target.setAttribute("cooldown", moves[e.target.id].cooldown);
-        console.log(e.target.getAttribute("cooldown"))
         document.querySelector(".move2").innerText = "Ход Лютого";
         gameOver(monsterHealth, efstafiy.name);
         refreshHealth();
@@ -130,9 +129,10 @@ function monsterMove() {
         moveCount++;
         e.target.setAttribute("cooldown", moves[e.target.id].cooldown)
         damage.innerText = `Монстр наносит ${moves[e.target.id].name} удар, нанося ${moves[e.target.id].physicalDmg} физического урона и ${moves[e.target.id].magicDmg} магического урона`;
-        countDamage(efstafiyPhysicArmour, moves[e.target.id].physicalDmg, efstafiyMagicArmour, moves[e.target.id].magicDmg, efstafiyHealth, 2);
         monsterPhysicArmour += (moves[e.target.id].physicArmorPercents);
         monsterMagicArmour += (moves[e.target.id].magicArmorPercents);
+        countDamage(efstafiyPhysicArmour, moves[e.target.id].physicalDmg, efstafiyMagicArmour, moves[e.target.id].magicDmg, efstafiyHealth, 2);
+        console.log(`Монстр наносит ${moves[e.target.id].physicalDmg} физического урона и ${moves[e.target.id].magicDmg} магического урона, здоровье монстра = ${monsterHealth}, броня:${monsterPhysicArmour}, магическая:${monsterMagicArmour}`);
         refreshHealth();
         disable(false, true);
         document.querySelector(".move2").innerText = "Ход Евстафия";
@@ -156,19 +156,27 @@ function countDamage(physicArmour, physicalDmg, magicArmour, magicDmg, health, p
     if(physicArmour - physicalDmg < 0) {
         health -= (physicalDmg - physicArmour);
         physicArmour = 0;
+        console.log(physicArmour, player, efstafiyPhysicArmour, monsterPhysicArmour)
     } else {
-        physicArmour - (physicalDmg) > 0 ? physicArmour - (physicalDmg) : 0
+        physicArmour = physicArmour - (physicalDmg) > 0 ? physicArmour - (physicalDmg) : 0
+        console.log(physicArmour, player, efstafiyPhysicArmour, monsterPhysicArmour)
     }
     if(magicArmour - magicDmg < 0) {
         health -= (magicDmg - magicArmour);
         magicArmour = 0;
+        console.log(magicArmour, player, efstafiyMagicArmour, monsterMagicArmour)
     } else {
-        magicArmour - (magicDmg) > 0 ? magicArmour - (magicDmg) : 0
+        magicArmour = magicArmour - (magicDmg) > 0 ? magicArmour - (magicDmg) : 0
+        console.log(magicArmour, player, efstafiyMagicArmour, monsterMagicArmour)
     }
     if(player == 1 ) {
         monsterHealth = health
+        monsterPhysicArmour = physicArmour
+        monsterMagicArmour = magicArmour
     } else {
        efstafiyHealth = health
+       efstafiyPhysicArmour = physicArmour
+       efstafiyMagicArmour = magicArmour
     }
     
 }
@@ -187,7 +195,15 @@ function gameOver(playerHealth, player) {
     if(playerHealth <= 0) {
         disable(true, true);
         damage.innerText = `${player} одержал победу!`
+        const over = document.createElement("div")
+        over.innerHTML = `<h4>${player} одержал победу!</h4>`
+        const battlefield = document.querySelector(".battlefield")
+        battlefield.classList.add("collapse")
+        const container = document.querySelector(".container")
+        container.appendChild(over);
     }
+    
+
 }
 
 function cooldown(formElement) {
@@ -213,7 +229,7 @@ function getRandomInt(max) {
 let target = null
 
 
-function botMove() {
+async function botMove() {
     let check = true
     while(check) {
         let move = getRandomInt(3);
@@ -254,7 +270,6 @@ function startGame() {
 
 function addView() {
     const startDiv = document.querySelector(".start_game");
-    const main = document.createElement("div");
     const container = document.querySelector(".battlefield")
     container.classList.remove("collapse")
     startDiv.classList.add("collapse")
