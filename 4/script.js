@@ -6,17 +6,17 @@ const monster = {
     moves: [
         {
             "name": "Удар когтистой лапой",
-            "physicalDmg": 4, // физический урон
+            "physicalDmg": 3, // физический урон
             "magicDmg": 0,    // магический урон
-            "physicArmorPercents": 2, // физическая броня
-            "magicArmorPercents": 2,  // магическая броня
+            "physicArmorPercents": 1, // физическая броня
+            "magicArmorPercents": 1,  // магическая броня
             "cooldown": 0     // ходов на восстановление
         },
         {
             "name": "Огненное дыхание",
             "physicalDmg": 0,
-            "magicDmg": 10,
-            "physicArmorPercents": 5,
+            "magicDmg": 7,
+            "physicArmorPercents": 4,
             "magicArmorPercents": 1,
             "cooldown": 3
         },
@@ -25,7 +25,7 @@ const monster = {
             "physicalDmg": 7,
             "magicDmg": 0,
             "physicArmorPercents": 0,
-            "magicArmorPercents": 6,
+            "magicArmorPercents": 3,
             "cooldown": 2
         },
     ]
@@ -48,7 +48,7 @@ const efstafiy = {
             "name": "Вертушка левой пяткой",
             "physicalDmg": 6,
             "magicDmg": 0,
-            "physicArmorPercents": 0,
+            "physicArmorPercents": 2,
             "magicArmorPercents": 3,
             "cooldown": 4
         },
@@ -56,16 +56,16 @@ const efstafiy = {
             "name": "Каноничный фаербол",
             "physicalDmg": 0,
             "magicDmg": 7,
-            "physicArmorPercents": 0,
-            "magicArmorPercents": 0,
+            "physicArmorPercents": 2,
+            "magicArmorPercents": 2,
             "cooldown": 3
         },
         {
             "name": "Магический блок",
-            "physicalDmg": 0,
+            "physicalDmg": 4,
             "magicDmg": 2,
-            "physicArmorPercents": 4,
-            "magicArmorPercents": 2,
+            "physicArmorPercents": 5,
+            "magicArmorPercents": 5,
             "cooldown": 4
         },
     ]
